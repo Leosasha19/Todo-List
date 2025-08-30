@@ -5,24 +5,17 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "devserv": "ts-node ../backend/server/server.js",
-    "build": "tsc -b && vite build",
-    "lint": "eslint ",
-    "preview": "vite preview"
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
     "axios": "^1.7.9",
-    "cors": "^2.8.5",
-    "express": "^4.21.2",
-    "pg": "^8.13.1",
-    "pg-hstore": "^2.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "sass": "^1.84.0",
-    "sequelize": "^6.37.5",
-    "sequelize-cli": "^6.6.2"
+    "sass": "^1.84.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
@@ -33,7 +26,6 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
-    "ts-node": "^10.9.2",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.22.0",
     "typescript-plugin-css-modules": "^5.1.0",
