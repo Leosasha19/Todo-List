@@ -1,22 +1,36 @@
 import express from 'express';
 import cors from 'cors';
 import {Sequelize} from "sequelize";
-import TodoModel from "../db/models/todo.js"
+import TodoModel from "../db/models/todo.js";
+import dotenv from 'dotenv';
 
 const app = express()
+dotenv.config();
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "https://todo-list-context-client.onrender.com/"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowHeaders:["Content-Type"]
 }));
 
 app.use(express.json());
-
-const sequelize = new Sequelize('todolist', 'postgres', '1234', {
-    host: 'localhost',
-    dialect: 'postgres',
-});
+const sequelize = process.env.DATABASE_URL
+    ? new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        dialectOptions: { ssl: { require: true, rejectUnauthorized: false } },
+        logging: false,
+    })
+    : new Sequelize(
+        process.env.DB_NAME,
+        process.env.DB_USERNAME,
+        process.env.DB_PASSWORD,
+        {
+            host: process.env.DB_HOST,
+            dialect: process.env.DB_DIALECT || 'postgres',
+            port: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
+            logging: false,
+        }
+    );
 
 sequelize
     .authenticate()
@@ -110,7 +124,7 @@ app.delete('/todos/:id', async (req, res) => {
 
 })
 
-const PORT = 5001;
+const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`)
 })

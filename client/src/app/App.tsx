@@ -1,5 +1,5 @@
-import MainPage from "../pages/MainPage/MainPage.tsx";
-import {TodoProvider} from "../context/todoContext.tsx";
+import MainPage from "../pages/MainPage/MainPage";
+import {TodoProvider} from "../context/todoContext";
 import './App.scss'
 
 function App() {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useTodo} from "../../context/todoContext.tsx";
+import {useTodo} from "../../context/todoContext";
 import deleteImg from "../../assets/icons/delete/удалить.png"
 import editImg from "../../assets/icons/edit/редактировать.png"
 import './MainPage.scss';
@@ -9,13 +9,9 @@ const MainPage = () => {
     const [inputValue, setInputValue] = useState<string>("")
     const [modalWindow, setModalWindow] = useState<boolean>(false)
     const [deleteId, setDeleteId] = useState<number | null>(null)
-    const [editId, setEditId] = useState<boolean>(false)
+    const [editId, setEditId] = useState<number | null | boolean>(false)
     const [inputEditValue, setInputEditValue] = useState<string>("")
     const [filteredTodos, setFilteredTodos] = useState(todos)
-
-    useEffect(() => {
-        setFilteredTodos(todos);
-    }, [todos]);
 
     const handleSubmit = () => {
         if(!inputValue.trim()) return
@@ -60,7 +56,7 @@ const MainPage = () => {
         }
     }
 
-    const deleteDoneTodos = (todo) => {
+    const deleteDoneTodos = () => {
         todos
             .filter(todo => todo.completed)
             .forEach(todo => deleteTodo(todo.id))
@@ -69,6 +65,10 @@ const MainPage = () => {
     const deleteAllTodos = () => {
         todos.forEach(todo => deleteTodo(todo.id))
     }
+
+    useEffect(() => {
+        setFilteredTodos(todos);
+    }, [todos]);
 
     return (
         <div className={"mainContainer"}>

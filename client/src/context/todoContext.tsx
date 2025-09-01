@@ -13,8 +13,10 @@ export type TodoContextType = {
     addTodo: (description: string) => Promise<void>;
     deleteTodo: (id: number) => Promise<void>;
     toggleTodo: (id: number) => Promise<void>;
-    changeDescription: (description: string) => Promise<void>;
+    changeDescription: (id:number,description: string) => Promise<void>;
 }
+
+const api = import.meta.env.VITE_API_URL;
 
 export const TodoContext = createContext<TodoContextType | undefined>(undefined);
 
@@ -22,13 +24,14 @@ export const TodoProvider = ({children} : {children: ReactNode}) => {
     const [todos, setTodos] = useState<Todo[]>([]);
 
     const getTodos = async () => {
-        const response = await axios("http://localhost:5001/todos")
-        const sortedTodos = response.data.sort((a, b) => a.id - b.id);
-        setTodos(sortedTodos)
+        const response = await axios.get<Todo[]>(`${api}/todos`)
+        const sortedTodos = response.data.sort((a:Todo, b:Todo) => a.id - b.id);
+        setTodos(sortedTodos);
+        return sortedTodos;
     }
 
     const addTodo = async (description: string) => {
-        const response = await axios.post("http://localhost:5001/todos", {
+        const response = await axios.post(`${api}/todos`, {
             description,
             completed: false,
         });
@@ -36,7 +39,7 @@ export const TodoProvider = ({children} : {children: ReactNode}) => {
         setTodos((prev) => [...prev, newTodo])
     };
     const deleteTodo = async (id:number) => {
-        await axios.delete(`http://localhost:5001/todos/${id}`)
+        await axios.delete(`${api}/todos/${id}`)
         setTodos((prev) => prev.filter((todo) => todo.id !== id))
     }
     const toggleTodo = async (id:number) => {
@@ -46,7 +49,7 @@ export const TodoProvider = ({children} : {children: ReactNode}) => {
         try {
             const updatedTodo = { ...todo, completed: !todo.completed };
 
-            const response = await axios.put(`http://localhost:5001/todos/${id}`, updatedTodo)
+            const response = await axios.put(`${api}/todos/${id}`, updatedTodo)
             console.log("Состояние успешно изменено")
 
             setTodos((prev) => prev.map((t) => (t.id === id? response.data : t)))
@@ -59,10 +62,9 @@ export const TodoProvider = ({children} : {children: ReactNode}) => {
     const changeDescription = async (id:number, newDescription: string) => {
         const todo = todos.find((t) => t.id === id)
         if (!todo) return
-
         try {
             const updatedTodo = { ...todo, description: newDescription};
-            const response = await axios.put(`http://localhost:5001/todos/description/${id}`, updatedTodo)
+            const response = await axios.put(`${api}/todos/description/${id}`, updatedTodo)
             console.log("Состояние описания успешно изменено")
             setTodos((prev) =>
                 prev.map((t) => (t.id === id ? { ...t, description: response.data.description } : t))
