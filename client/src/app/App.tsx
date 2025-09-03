@@ -1,16 +1,16 @@
-import MainPage from "../pages/MainPage/MainPage";
-import {TodoProvider} from "../context/todoContext";
-import './App.scss'
+import { TodoProvider } from '../context/todoContext';
+import MainPage from '../pages/MainPage/MainPage';
+
+import './App.scss';
 
 function App() {
-
   return (
     <>
-        <TodoProvider>
-            <MainPage/>
-        </TodoProvider>
+      <TodoProvider>
+        <MainPage />
+      </TodoProvider>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
