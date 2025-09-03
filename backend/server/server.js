@@ -8,9 +8,9 @@ const app = express()
 dotenv.config();
 
 app.use(cors({
-    origin: ["http://localhost:5173", "https://todo-list-context-client.onrender.com/"],
+    origin: ["http://localhost:5173", "https://todo-list-context-client.onrender.com"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    allowHeaders:["Content-Type"]
+    allowedHeaders: ['Content-Type'],
 }));
 
 app.use(express.json());
